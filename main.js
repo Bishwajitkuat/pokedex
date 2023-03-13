@@ -3,6 +3,7 @@ const searchNameId = document.querySelector("#search_name_id");
 const pokeContainer = document.querySelector(".poke_container");
 const searchBtnAll = document.querySelectorAll(".search_btn button");
 const searchType = document.querySelector(".search_type");
+let pokeList = [];
 const typeList = [
   "bug",
   "dark",
@@ -36,7 +37,7 @@ typeList.forEach((item) => {
 
 let pokeGen = "gen_1";
 let pokeFilterListByGen;
-let pokeListByGen;
+// let pokeListByGen;
 const genList = {
   gen_1: { limit: 151, offset: 0 },
   gen_2: { limit: 100, offset: 152 },
@@ -49,14 +50,17 @@ const genList = {
   gen_9: { limit: 110, offset: 819 },
 };
 async function getPokemon(limit, offset) {
+  pokeList = [];
   const pokeByGenUrl = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`;
   const response = await fetch(pokeByGenUrl);
   const dataByGen = await response.json();
-  pokeListByGen = dataByGen.results;
-  pokeFilterListByGen = pokeListByGen;
-  searchNameId.value = "";
-  pokeContainer.innerHTML = "";
-  renderPoke(pokeFilterListByGen);
+  const pokeListByGen = dataByGen.results;
+
+  // pokeFilterListByGen = pokeListByGen;
+
+  // searchNameId.value = "";
+  // pokeContainer.innerHTML = "";
+  // renderPoke(pokeFilterListByGen);
 }
 
 async function renderPoke(list) {
