@@ -1,0 +1,88 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background-color: black;
+  color: white;
+  font-family: sans-serif;
+}
+.main_container {
+  margin: 0 auto;
+  max-width: 1000px;
+  margin-top: 3rem;
+  padding: 2rem;
+  max-width: 920px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
+}
+header img {
+  width: 10rem;
+  border-radius: 50%;
+  transition: 2s;
+}
+h1 {
+  font-size: 4rem;
+}
+.search_btn button {
+  padding: 0.5rem;
+}
+.poke_container {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+.cards {
+  border: 0.025rem solid white;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
+  gap: 1rem;
+  transition: 2s;
+  padding: 1rem;
+  position: relative;
+}
+.poke_gen {
+  padding: 0.5rem;
+  position: absolute;
+  top: 5px;
+  border: 0.025rem solid white;
+  border-radius: 50%;
+}
+.poke_img {
+  width: 100%;
+}
+.poke_identity {
+  padding: 0.5rem;
+  border-top: 0.025rem solid white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+.poke_name {
+  font-size: 1.5rem;
+}
+.poke_type {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.poke_type img {
+  width: 1.5rem;
+}
