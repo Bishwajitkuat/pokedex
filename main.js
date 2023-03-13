@@ -4,6 +4,8 @@ const pokeContainer = document.querySelector(".poke_container");
 const searchBtnAll = document.querySelectorAll(".search_btn button");
 const searchType = document.querySelector(".search_type");
 let pokeList = [];
+let pokeGen = "gen_1";
+let pokeFilterList = [];
 const typeList = [
   "bug",
   "dark",
@@ -35,9 +37,6 @@ typeList.forEach((item) => {
   searchType.insertAdjacentHTML("afterbegin", html);
 });
 
-let pokeGen = "gen_1";
-let pokeFilterListByGen;
-// let pokeListByGen;
 const genList = {
   gen_1: { limit: 151, offset: 0 },
   gen_2: { limit: 100, offset: 152 },
@@ -50,40 +49,47 @@ const genList = {
   gen_9: { limit: 110, offset: 819 },
 };
 async function getPokemon(limit, offset) {
+  searchNameId.value = "";
+  pokeContainer.innerHTML = "";
   pokeList = [];
   const pokeByGenUrl = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`;
   const response = await fetch(pokeByGenUrl);
   const dataByGen = await response.json();
   const pokeListByGen = dataByGen.results;
-
-  // pokeFilterListByGen = pokeListByGen;
-
-  // searchNameId.value = "";
-  // pokeContainer.innerHTML = "";
-  // renderPoke(pokeFilterListByGen);
-}
-
-async function renderPoke(list) {
-  list.forEach((item) => {
+  pokeListByGen.forEach(async (item) => {
     const pokeName = item.name;
-    fetch(item.url)
-      .then((response) => response.json())
-      .then((data) => {
-        const pokeImg = data.sprites.other.dream_world.front_default;
-        const pokeId = data.id;
-        const pokeTypes = data.types
-          .map((item) => {
-            const typeName = item.type.name;
-            return `<img src="/img/${typeName}.png" alt="" />`;
-          })
-          .join(" ");
-        const pokeGenDisplay = genRender(pokeGen);
-        renderPokeList(pokeName, pokeImg, pokeGenDisplay, pokeId, pokeTypes);
-      });
+    const res = await fetch(item.url);
+    const data = await res.json();
+    const pokeImg = data.sprites.other.dream_world.front_default;
+    const pokeId = data.id;
+    const pokeTypes = data.types.map((item) => item.type.name);
+    const pokeTypesImg = data.types
+      .map((item) => {
+        const typeName = item.type.name;
+        return `<img src="/img/${typeName}.png" alt="" />`;
+      })
+      .join(" ");
+    const pokeGenDisplay = genRender(pokeGen);
+    const pokeInfo = {
+      name: pokeName,
+      img: pokeImg,
+      id: pokeId,
+      types: pokeTypes,
+      typesImg: pokeTypesImg,
+      gen: pokeGenDisplay,
+    };
+    pokeList.push(pokeInfo);
+    renderPokeList(pokeName, pokeImg, pokeGenDisplay, pokeId, pokeTypesImg);
   });
 }
 
-function genRender(poreGen) {
+function renderPoke(list) {
+  list.forEach((item) => {
+    renderPokeList(item.name, item.img, item.gen, item.id, item.typesImg);
+  });
+}
+
+function genRender(pokeGen) {
   if (pokeGen === "gen_1") return "G I";
   if (pokeGen === "gen_2") return "G II";
   if (pokeGen === "gen_3") return "G III";
@@ -122,10 +128,25 @@ searchBtnAll.forEach((item) => {
 searchNameId.addEventListener("input", (e) => {
   const searchValue = e.target.value.toLowerCase();
   e.preventDefault();
-  pokeFilterListByGen =
+  pokeFilterList =
     searchValue.length > 0
-      ? pokeListByGen.filter((item) => item.name.includes(searchValue))
-      : pokeListByGen;
+      ? pokeList.filter((item) => item.name.includes(searchValue))
+      : pokeList;
   pokeContainer.innerHTML = "";
-  renderPoke(pokeFilterListByGen);
+  renderPoke(pokeFilterList);
+});
+
+searchType.addEventListener("input", () => {
+  const selectedTypes = [];
+  const alltypes = document.querySelectorAll("form input");
+  for (element of alltypes) {
+    if (element.checked == true) {
+      selectedTypes.push(element.id);
+    }
+  }
+  pokeFilterList = pokeList.filter((obj) => {
+    return selectedTypes.every((item) => obj.types.includes(item));
+  });
+  pokeContainer.innerHTML = "";
+  renderPoke(pokeFilterList);
 });
