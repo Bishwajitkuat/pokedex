@@ -34,6 +34,12 @@ header img {
 h1 {
   font-size: 4rem;
 }
+.search_btn {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 1rem;
+}
 .search_btn button {
   padding: 0.5rem;
 }
@@ -58,7 +64,8 @@ h1 {
 .poke_gen {
   padding: 0.5rem;
   position: absolute;
-  top: 5px;
+  top: 7px;
+  right: 7px;
   border: 0.025rem solid white;
   border-radius: 50%;
 }
@@ -85,4 +92,40 @@ h1 {
 
 .poke_type img {
   width: 1.5rem;
+}
+
+label img {
+  width: 2rem;
+}
+.search_type {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.search_type div {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.search_div {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.search_name {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+.search_name input {
+  width: 15rem;
+  height: 2rem;
+  box-shadow: none;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: gray;
 }

@@ -2,35 +2,61 @@ const logoImg = document.querySelector("#logoImg");
 const searchNameId = document.querySelector("#search_name_id");
 const pokeContainer = document.querySelector(".poke_container");
 const searchBtnAll = document.querySelectorAll(".search_btn button");
+const searchType = document.querySelector(".search_type");
+const typeList = [
+  "bug",
+  "dark",
+  "dragon",
+  "electric",
+  "fairy",
+  "fighting",
+  "fire",
+  "flying",
+  "ghost",
+  "grass",
+  "ground",
+  "ice",
+  "normal",
+  "poison",
+  "psychic",
+  "rock",
+  "steel",
+  "water",
+];
+
+typeList.forEach((item) => {
+  const html = `
+  <div>
+  <input type="checkbox" id="${item}" />
+  <label for="${item}"><img src="img/${item}.png" alt="" /></label>
+</div>
+  `;
+  searchType.insertAdjacentHTML("afterbegin", html);
+});
+
 let pokeGen = "gen_1";
+let pokeFilterListByGen;
+let pokeListByGen;
 const genList = {
-  gen_1: { limit: 151, offset: 151 },
-  gen_2: { limit: 100, offset: 251 },
-  gen_3: { limit: 135, offset: 386 },
-  gen_4: { limit: 107, offset: 493 },
+  gen_1: { limit: 151, offset: 0 },
+  gen_2: { limit: 100, offset: 152 },
+  gen_3: { limit: 135, offset: 253 },
+  gen_4: { limit: 107, offset: 389 },
   gen_5: { limit: 156, offset: 649 },
-  gen_6: { limit: 72, offset: 721 },
-  gen_7: { limit: 88, offset: 809 },
-  gen_8: { limit: 96, offset: 905 },
-  gen_9: { limit: 110, offset: 1015 },
+  gen_6: { limit: 72, offset: 546 },
+  gen_7: { limit: 88, offset: 619 },
+  gen_8: { limit: 96, offset: 708 },
+  gen_9: { limit: 110, offset: 819 },
 };
 async function getPokemon(limit, offset) {
-  pokeContainer.innerHTML = "";
-  console.log(pokeContainer.innerHTML);
   const pokeByGenUrl = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`;
-  const pokeByGen = await fetch(pokeByGenUrl);
-  const dataByGen = await pokeByGen.json();
-  if (searchNameId.value === "all") renderPoke(dataByGen.results);
-  searchNameId.addEventListener("input", (e) => {
-    e.preventDefault();
-    const searchValue = e.target.value;
-    const filteredList = dataByGen.results.filter((item) =>
-      item.name.includes(searchValue)
-    );
-    pokeContainer.innerHTML = "";
-
-    renderPoke(filteredList);
-  });
+  const response = await fetch(pokeByGenUrl);
+  const dataByGen = await response.json();
+  pokeListByGen = dataByGen.results;
+  pokeFilterListByGen = pokeListByGen;
+  searchNameId.value = "";
+  pokeContainer.innerHTML = "";
+  renderPoke(pokeFilterListByGen);
 }
 
 async function renderPoke(list) {
@@ -41,7 +67,6 @@ async function renderPoke(list) {
       .then((data) => {
         const pokeImg = data.sprites.other.dream_world.front_default;
         const pokeId = data.id;
-        logoImg.src = pokeImg;
         const pokeTypes = data.types
           .map((item) => {
             const typeName = item.type.name;
@@ -77,10 +102,10 @@ function renderPokeList(name, imgUrl, gen, id, pokeType) {
         <p class="poke_type">${pokeType}</p>
       </div>
         </div>`;
-  document
-    .querySelector(".poke_container")
-    .insertAdjacentHTML("beforeend", html);
+
+  pokeContainer.insertAdjacentHTML("beforeend", html);
 }
+
 searchBtnAll.forEach((item) => {
   item.addEventListener("click", (e) => {
     pokeGen = e.target.id;
@@ -88,4 +113,15 @@ searchBtnAll.forEach((item) => {
     const pokeOffset = genList[pokeGen].offset;
     getPokemon(pokeLimit, pokeOffset);
   });
+});
+
+searchNameId.addEventListener("input", (e) => {
+  const searchValue = e.target.value.toLowerCase();
+  e.preventDefault();
+  pokeFilterListByGen =
+    searchValue.length > 0
+      ? pokeListByGen.filter((item) => item.name.includes(searchValue))
+      : pokeListByGen;
+  pokeContainer.innerHTML = "";
+  renderPoke(pokeFilterListByGen);
 });
