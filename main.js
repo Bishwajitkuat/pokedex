@@ -39,17 +39,30 @@ typeList.forEach((item) => {
 });
 
 const genList = {
-  gen_1: { limit: 151, offset: 0, gen: "G I" },
-  gen_2: { limit: 100, offset: 152, gen: "G II" },
-  gen_3: { limit: 135, offset: 253, gen: "G III" },
-  gen_4: { limit: 107, offset: 389, gen: "G IV" },
-  gen_5: { limit: 156, offset: 649, gen: "G V" },
-  gen_6: { limit: 72, offset: 546, gen: "G VI" },
-  gen_7: { limit: 88, offset: 619, gen: "G VII" },
-  gen_8: { limit: 96, offset: 708, gen: "G VIII" },
-  gen_9: { limit: 200, offset: 819, gen: "G IX" },
+  gen_1: { limit: 151, offset: 0 },
+  gen_2: { limit: 100, offset: 151 },
+  gen_3: { limit: 135, offset: 251 },
+  gen_4: { limit: 107, offset: 386 },
+  gen_5: { limit: 156, offset: 493 },
+  gen_6: { limit: 72, offset: 649 },
+  gen_7: { limit: 88, offset: 721 },
+  gen_8: { limit: 96, offset: 809 },
+  gen_9: { limit: 105, offset: 905 },
+  gen_all: { limit: 1010, offset: 0 },
 };
-async function getPokemon(limit, offset, pokeGenDisplay) {
+function getPokeGenFromId(id) {
+  if (id <= 151) return "G I";
+  else if (id <= 251) return "G II";
+  else if (id <= 386) return "G III";
+  else if (id <= 493) return "G IV";
+  else if (id <= 649) return "G V";
+  else if (id <= 721) return "G VI";
+  else if (id <= 809) return "G VII";
+  else if (id <= 905) return "G VIII";
+  else if (id > 905) return "G IX";
+}
+
+async function getPokemon(limit, offset) {
   // resetting search by name and type input fields before rendering new generations
   searchNameId.value = "";
   pokeContainer.innerHTML = "";
@@ -67,6 +80,7 @@ async function getPokemon(limit, offset, pokeGenDisplay) {
     //function returns a valid url for img
     const pokeImg = validImagUrl(data.sprites);
     const pokeId = data.id;
+    const pokeGenDisplay = getPokeGenFromId(pokeId);
     // making a list types for each pokemon out of an object
     const pokeTypes = data.types.map((item) => item.type.name);
     // making a string which contain all the img tags of types
@@ -96,7 +110,7 @@ function validImagUrl(obj) {
   if (obj.other.dream_world.front_default)
     return obj.other.dream_world.front_default;
   else if (obj.other.home.front_default) return obj.other.home.front_default;
-  else if (obj.front_default) return obj.back_default;
+  else if (obj.front_default) return obj.front_default;
 }
 
 // render list of pokemon
@@ -128,7 +142,7 @@ searchBtnAll.forEach((item) => {
     const pokeGenDisplay = genList[pokeGen].gen;
     const pokeLimit = genList[pokeGen].limit;
     const pokeOffset = genList[pokeGen].offset;
-    getPokemon(pokeLimit, pokeOffset, pokeGenDisplay);
+    getPokemon(pokeLimit, pokeOffset);
   });
 });
 // fileter a pokemon list by name
