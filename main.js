@@ -39,15 +39,15 @@ typeList.forEach((item) => {
 });
 
 const genList = {
-  gen_1: { limit: 151, offset: 0 },
-  gen_2: { limit: 100, offset: 152 },
-  gen_3: { limit: 135, offset: 253 },
-  gen_4: { limit: 107, offset: 389 },
-  gen_5: { limit: 156, offset: 649 },
-  gen_6: { limit: 72, offset: 546 },
-  gen_7: { limit: 88, offset: 619 },
-  gen_8: { limit: 96, offset: 708 },
-  gen_9: { limit: 200, offset: 819 },
+  gen_1: { limit: 151, offset: 0, gen: "G I" },
+  gen_2: { limit: 100, offset: 152, gen: "G II" },
+  gen_3: { limit: 135, offset: 253, gen: "G III" },
+  gen_4: { limit: 107, offset: 389, gen: "G IV" },
+  gen_5: { limit: 156, offset: 649, gen: "G V" },
+  gen_6: { limit: 72, offset: 546, gen: "G VI" },
+  gen_7: { limit: 88, offset: 619, gen: "G VII" },
+  gen_8: { limit: 96, offset: 708, gen: "G VIII" },
+  gen_9: { limit: 200, offset: 819, gen: "G IX" },
 };
 async function getPokemon(limit, offset, pokeGenDisplay) {
   // resetting search by name and type input fields before rendering new generations
@@ -125,7 +125,7 @@ function renderPoke(name, imgUrl, gen, id, pokeType) {
 searchBtnAll.forEach((item) => {
   item.addEventListener("click", (e) => {
     pokeGen = e.target.id;
-    const pokeGenDisplay = e.target.dataset.gen;
+    const pokeGenDisplay = genList[pokeGen].gen;
     const pokeLimit = genList[pokeGen].limit;
     const pokeOffset = genList[pokeGen].offset;
     getPokemon(pokeLimit, pokeOffset, pokeGenDisplay);
