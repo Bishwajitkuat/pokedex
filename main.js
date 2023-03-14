@@ -47,9 +47,10 @@ const genList = {
   gen_6: { limit: 72, offset: 546 },
   gen_7: { limit: 88, offset: 619 },
   gen_8: { limit: 96, offset: 708 },
-  gen_9: { limit: 110, offset: 819 },
+  gen_9: { limit: 200, offset: 819 },
 };
 async function getPokemon(limit, offset) {
+  // resetting search by name and type before rendering new generations
   searchNameId.value = "";
   pokeContainer.innerHTML = "";
   pokeList = [];
@@ -61,7 +62,7 @@ async function getPokemon(limit, offset) {
     const pokeName = item.name;
     const res = await fetch(item.url);
     const data = await res.json();
-    const pokeImg = data.sprites.other.dream_world.front_default;
+    const pokeImg = validImagUrl(data.sprites);
     const pokeId = data.id;
     const pokeTypes = data.types.map((item) => item.type.name);
     const pokeTypesImg = data.types
@@ -82,6 +83,14 @@ async function getPokemon(limit, offset) {
     pokeList.push(pokeInfo);
     renderPokeList(pokeName, pokeImg, pokeGenDisplay, pokeId, pokeTypesImg);
   });
+}
+
+// take the object containeing img url return a valid img url
+function validImagUrl(obj) {
+  if (obj.other.dream_world.front_default)
+    return obj.other.dream_world.front_default;
+  else if (obj.other.home.front_default) return obj.other.home.front_default;
+  else if (obj.front_default) return obj.back_default;
 }
 
 function renderPoke(list) {
