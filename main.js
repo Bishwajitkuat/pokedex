@@ -5,7 +5,8 @@ const searchBtnAll = document.querySelectorAll(".search_btn button");
 const searchType = document.querySelector(".search_type");
 let pokeList = [];
 let pokeGen = "gen_1";
-let pokeFilterList = [];
+let selectedTypes = [];
+let searchValue = "";
 const typeList = [
   "bug",
   "dark",
@@ -84,6 +85,7 @@ async function getPokemon(limit, offset) {
 }
 
 function renderPoke(list) {
+  pokeContainer.innerHTML = "";
   list.forEach((item) => {
     renderPokeList(item.name, item.img, item.gen, item.id, item.typesImg);
   });
@@ -126,27 +128,40 @@ searchBtnAll.forEach((item) => {
 });
 
 searchNameId.addEventListener("input", (e) => {
-  const searchValue = e.target.value.toLowerCase();
+  searchValue = e.target.value.toLowerCase();
   e.preventDefault();
-  pokeFilterList =
-    searchValue.length > 0
-      ? pokeList.filter((item) => item.name.includes(searchValue))
-      : pokeList;
-  pokeContainer.innerHTML = "";
-  renderPoke(pokeFilterList);
+  const pokeFilterListByName = filterByName(pokeList, searchValue);
+  const filterByBoth =
+    selectedTypes.length > 0
+      ? filterByType(pokeFilterListByName)
+      : pokeFilterListByName;
+  renderPoke(filterByBoth);
 });
 
 searchType.addEventListener("input", () => {
-  const selectedTypes = [];
+  selectedTypes = [];
   const alltypes = document.querySelectorAll("form input");
   for (element of alltypes) {
     if (element.checked == true) {
       selectedTypes.push(element.id);
     }
   }
-  pokeFilterList = pokeList.filter((obj) => {
+  const pokeFilterListByTypes = filterByType(pokeList);
+  const filterByboth =
+    searchValue.length > 0
+      ? filterByName(pokeFilterListByTypes, searchValue)
+      : pokeFilterListByTypes;
+  renderPoke(filterByboth);
+});
+
+function filterByName(list, searchValue) {
+  return searchValue.length > 0
+    ? list.filter((item) => item.name.includes(searchValue))
+    : list;
+}
+
+function filterByType(list) {
+  return list.filter((obj) => {
     return selectedTypes.every((item) => obj.types.includes(item));
   });
-  pokeContainer.innerHTML = "";
-  renderPoke(pokeFilterList);
-});
+}
