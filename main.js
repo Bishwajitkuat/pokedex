@@ -3,10 +3,10 @@ const searchNameId = document.querySelector("#search_name_id");
 const pokeContainer = document.querySelector(".poke_container");
 const searchBtnAll = document.querySelectorAll(".search_btn button");
 const searchType = document.querySelector(".search_type");
-let pokeList = [];
-let pokeGen = "gen_1";
-let selectedTypes = [];
-let searchValue = "";
+// GLOBAL VARIABLE
+let pokeList = []; // store all pokemon after selecting a pokemon gen.
+let selectedTypes = []; // store updated user choice of types
+let searchValue = ""; // store updated user choice fo name
 const typeList = [
   "bug",
   "dark",
@@ -27,7 +27,7 @@ const typeList = [
   "steel",
   "water",
 ];
-
+// dynamically adding type checkboxes
 typeList.forEach((item) => {
   const html = `
   <div>
@@ -49,29 +49,34 @@ const genList = {
   gen_8: { limit: 96, offset: 708 },
   gen_9: { limit: 200, offset: 819 },
 };
-async function getPokemon(limit, offset) {
-  // resetting search by name and type before rendering new generations
+async function getPokemon(limit, offset, pokeGenDisplay) {
+  // resetting search by name and type input fields before rendering new generations
   searchNameId.value = "";
   pokeContainer.innerHTML = "";
   pokeList = [];
+  // featch for all pokemon by generations
   const pokeByGenUrl = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`;
   const response = await fetch(pokeByGenUrl);
   const dataByGen = await response.json();
   const pokeListByGen = dataByGen.results;
+  // responst is a list containing pokemon name and url for detail, 2nd featch done for more info
   pokeListByGen.forEach(async (item) => {
     const pokeName = item.name;
     const res = await fetch(item.url);
     const data = await res.json();
+    //function returns a valid url for img
     const pokeImg = validImagUrl(data.sprites);
     const pokeId = data.id;
+    // making a list types for each pokemon out of an object
     const pokeTypes = data.types.map((item) => item.type.name);
+    // making a string which contain all the img tags of types
     const pokeTypesImg = data.types
       .map((item) => {
         const typeName = item.type.name;
         return `<img src="/img/${typeName}.png" alt="" />`;
       })
       .join(" ");
-    const pokeGenDisplay = genRender(pokeGen);
+    // constraction of object for each pokemon and push into global pokeList for search by name and type
     const pokeInfo = {
       name: pokeName,
       img: pokeImg,
@@ -81,11 +86,12 @@ async function getPokemon(limit, offset) {
       gen: pokeGenDisplay,
     };
     pokeList.push(pokeInfo);
-    renderPokeList(pokeName, pokeImg, pokeGenDisplay, pokeId, pokeTypesImg);
+    // render one by one works better than rendering all at last
+    renderPoke(pokeName, pokeImg, pokeGenDisplay, pokeId, pokeTypesImg);
   });
 }
 
-// take the object containeing img url return a valid img url
+// take the object containeing img url return a valid img url in order of preference
 function validImagUrl(obj) {
   if (obj.other.dream_world.front_default)
     return obj.other.dream_world.front_default;
@@ -93,26 +99,15 @@ function validImagUrl(obj) {
   else if (obj.front_default) return obj.back_default;
 }
 
-function renderPoke(list) {
+// render list of pokemon
+function renderPokeList(list) {
   pokeContainer.innerHTML = "";
   list.forEach((item) => {
-    renderPokeList(item.name, item.img, item.gen, item.id, item.typesImg);
+    renderPoke(item.name, item.img, item.gen, item.id, item.typesImg);
   });
 }
-
-function genRender(pokeGen) {
-  if (pokeGen === "gen_1") return "G I";
-  if (pokeGen === "gen_2") return "G II";
-  if (pokeGen === "gen_3") return "G III";
-  if (pokeGen === "gen_4") return "G IV";
-  if (pokeGen === "gen_5") return "G V";
-  if (pokeGen === "gen_6") return "G VI";
-  if (pokeGen === "gen_7") return "G VII";
-  if (pokeGen === "gen_8") return "G VIII";
-  if (pokeGen === "gen_9") return "G IX";
-}
-
-function renderPokeList(name, imgUrl, gen, id, pokeType) {
+// render each pokemon
+function renderPoke(name, imgUrl, gen, id, pokeType) {
   const html = `
     <div class="cards">
       <p class="poke_gen">${gen}</p>
@@ -130,12 +125,25 @@ function renderPokeList(name, imgUrl, gen, id, pokeType) {
 searchBtnAll.forEach((item) => {
   item.addEventListener("click", (e) => {
     pokeGen = e.target.id;
+    const pokeGenDisplay = e.target.dataset.gen;
     const pokeLimit = genList[pokeGen].limit;
     const pokeOffset = genList[pokeGen].offset;
-    getPokemon(pokeLimit, pokeOffset);
+    getPokemon(pokeLimit, pokeOffset, pokeGenDisplay);
   });
 });
-
+// fileter a pokemon list by name
+function filterByName(list, searchValue) {
+  return searchValue.length > 0
+    ? list.filter((item) => item.name.includes(searchValue))
+    : list;
+}
+// filter a pokemon list by type
+function filterByType(list) {
+  return list.filter((obj) => {
+    return selectedTypes.every((item) => obj.types.includes(item));
+  });
+}
+// event listener for any input change in search by name input field. first filter by name then filter by type if selected
 searchNameId.addEventListener("input", (e) => {
   searchValue = e.target.value.toLowerCase();
   e.preventDefault();
@@ -144,9 +152,9 @@ searchNameId.addEventListener("input", (e) => {
     selectedTypes.length > 0
       ? filterByType(pokeFilterListByName)
       : pokeFilterListByName;
-  renderPoke(filterByBoth);
+  renderPokeList(filterByBoth);
 });
-
+// event listener for any input change in type checkboxes. first filter by type then filter by name if value available.
 searchType.addEventListener("input", () => {
   selectedTypes = [];
   const alltypes = document.querySelectorAll("form input");
@@ -160,17 +168,5 @@ searchType.addEventListener("input", () => {
     searchValue.length > 0
       ? filterByName(pokeFilterListByTypes, searchValue)
       : pokeFilterListByTypes;
-  renderPoke(filterByboth);
+  renderPokeList(filterByboth);
 });
-
-function filterByName(list, searchValue) {
-  return searchValue.length > 0
-    ? list.filter((item) => item.name.includes(searchValue))
-    : list;
-}
-
-function filterByType(list) {
-  return list.filter((obj) => {
-    return selectedTypes.every((item) => obj.types.includes(item));
-  });
-}
