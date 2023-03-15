@@ -58,7 +58,7 @@ h1 {
   gap: 2rem;
 }
 .cards {
-  background-color: rgba(128, 128, 128, 0.384);
+  background-color: #80808062;
   box-shadow: -5px 5px 10px gray;
   border-radius: 0.5rem;
   display: flex;
@@ -69,6 +69,10 @@ h1 {
   transition: 2s;
   padding: 1rem;
   position: relative;
+  transition: transform 500ms;
+}
+.cards:hover {
+  transform: scale(1.1);
 }
 .poke_gen {
   padding: 0.5rem;
@@ -80,6 +84,33 @@ h1 {
 }
 .poke_img {
   width: 100%;
+}
+.poke_img:hover {
+  z-index: 100;
+  transform: scale(1.5);
+  animation: jumping 150ms;
+  animation-iteration-count: 10;
+}
+
+@keyframes jumping {
+  0% {
+    transform: translateX(10%);
+  }
+  20% {
+    transform: translateY(10%);
+  }
+  40% {
+    transform: translateX(-10%);
+  }
+  60% {
+    transform: translateY(-10%);
+  }
+  80% {
+    transform: translateX(10%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
 }
 .poke_identity {
   padding: 0.5rem;
