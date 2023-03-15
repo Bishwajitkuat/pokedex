@@ -4,6 +4,7 @@ const pokeContainer = document.querySelector(".poke_container");
 const searchBtnAll = document.querySelectorAll(".search_btn button");
 const searchType = document.querySelector(".search_type_form");
 const welcomeDiv = document.querySelector(".welcome_div");
+const goToTop = document.querySelector("#go_to_top");
 // GLOBAL VARIABLE
 let pokeList = []; // store all pokemon after selecting a pokemon gen.
 let selectedTypes = []; // store updated user choice of types
@@ -198,4 +199,13 @@ searchType.addEventListener("input", () => {
       ? filterByName(pokeFilterListByTypes, searchValue)
       : pokeFilterListByTypes;
   renderPokeList(filterByboth);
+});
+// top button
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 500) {
+    goToTop.style.visibility = "visible";
+  } else {
+    goToTop.style.visibility = "hidden";
+  }
+  // console.log(window.scrollY);
 });
