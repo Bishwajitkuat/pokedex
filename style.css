@@ -242,7 +242,7 @@ h1 {
 @media (max-width: 600px) {
   .main_container {
     padding: 0.5rem;
-    width: 90wv;
+    width: 90vw;
   }
   h2 {
     font-size: 3rem;
@@ -270,8 +270,6 @@ h1 {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   transition: visibility 1s;
-}
-#go_to_top a {
   text-decoration: none;
   font-size: 1.2rem;
   font-weight: bold;

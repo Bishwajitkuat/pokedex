@@ -8,7 +8,7 @@
     <title>Poke Store</title>
   </head>
   <body>
-    <div class="main_container" id="container">
+    <main class="main_container" id="container">
       <header>
         <img
           id="logoImg"
@@ -17,7 +17,7 @@
         />
         <h2>Pokedex</h2>
       </header>
-      <div class="search_div">
+      <section class="search_div">
         <h3>Generations</h3>
         <div class="search_btn">
           <button id="gen_1">I</button>
@@ -39,8 +39,8 @@
           <label for="search_name_id">Pokemon search by name</label>
           <input type="text" id="search_name_id" />
         </div>
-      </div>
-      <div class="welcome_div">
+      </section>
+      <section class="welcome_div">
         <h1>Hello Pokemon Lovers!!!</h1>
         <div class="welcome_instraction">
           <img
@@ -57,20 +57,10 @@
             generation
           </p>
         </div>
-      </div>
-      <vid class="poke_container">
-        <!-- <div class="cards">
-          <p class="poke_gen">${gen}</p>
-          <img class="poke_img" src="${imgUrl}" alt="poke imgs" />
-          <div class="poke_identity">
-            <p id="poke_id">${id}</p>
-            <p class="poke_name">${name}</p>
-            <p class="poke_type"><img src="/img/water.png" alt="" /></p>
-          </div>
-        </div> -->
-      </vid>
-      <button id="go_to_top"><a href="#container">Top</a></button>
-    </div>
+      </section>
+      <section class="poke_container"></section>
+      <a id="go_to_top" href="#container">Top</a>
+    </main>
     <script src="main.js"></script>
   </body>
 </html>
