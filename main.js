@@ -2,7 +2,7 @@ const logoImg = document.querySelector("#logoImg");
 const searchNameId = document.querySelector("#search_name_id");
 const pokeContainer = document.querySelector(".poke_container");
 const searchBtnAll = document.querySelectorAll(".search_btn button");
-const searchType = document.querySelector(".search_type");
+const searchType = document.querySelector(".search_type_form");
 // GLOBAL VARIABLE
 let pokeList = []; // store all pokemon after selecting a pokemon gen.
 let selectedTypes = []; // store updated user choice of types
@@ -175,9 +175,13 @@ searchNameId.addEventListener("input", (e) => {
 searchType.addEventListener("input", () => {
   selectedTypes = [];
   const alltypes = document.querySelectorAll("form input");
+  alltypes.forEach(
+    (item) => (item.closest("div").style.filter = "brightness(40%)")
+  );
   for (element of alltypes) {
     if (element.checked == true) {
       selectedTypes.push(element.id);
+      element.closest("div").style.filter = "brightness(100%)";
     }
   }
   const pokeFilterListByTypes = filterByType(pokeList);

@@ -11,14 +11,12 @@ body {
 .main_container {
   margin: 0 auto;
   max-width: 1200px;
-  margin-top: 1rem;
-  padding: 2rem;
-  padding-top: 0;
+  padding: 0 2rem;
   max-width: 920px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
 }
 header {
   width: 100%;
@@ -28,7 +26,7 @@ header {
   gap: 5rem;
 }
 header img {
-  width: 10rem;
+  width: 6rem;
   border-radius: 50%;
   transition: 2s;
 }
@@ -110,15 +108,22 @@ label img {
 }
 .search_type {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.search_type_form {
+  display: flex;
   gap: 1rem;
   flex-wrap: wrap;
   justify-content: center;
 }
-.search_type div {
+.search_type_form div {
   display: flex;
   gap: 0.5rem;
   align-items: center;
 }
+
 .search_div {
   width: 100%;
   padding: 0 2rem;
