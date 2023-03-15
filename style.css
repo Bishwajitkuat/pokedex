@@ -178,3 +178,25 @@ label img {
   border: none;
   background-color: gray;
 }
+
+/* Wellcome div */
+.welcome_instraction {
+  margin-top: 2rem;
+  display: grid;
+  gap: 2rem;
+  grid-template-areas:
+    "a b b"
+    "a c c";
+}
+.wel_img {
+  grid-area: a;
+  width: 10rem;
+}
+.wel_tex1 {
+  grid-area: b;
+  align-self: center;
+}
+.wel_txt2 {
+  grid-area: c;
+  align-self: center;
+}

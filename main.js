@@ -3,6 +3,7 @@ const searchNameId = document.querySelector("#search_name_id");
 const pokeContainer = document.querySelector(".poke_container");
 const searchBtnAll = document.querySelectorAll(".search_btn button");
 const searchType = document.querySelector(".search_type_form");
+const welcomeDiv = document.querySelector(".welcome_div");
 // GLOBAL VARIABLE
 let pokeList = []; // store all pokemon after selecting a pokemon gen.
 let selectedTypes = []; // store updated user choice of types
@@ -31,7 +32,7 @@ const typeList = [
 typeList.forEach((item) => {
   const html = `
   <div>
-  <input type="checkbox" id="${item}" />
+  <input class="type_input" type="checkbox" id="${item}" />
   <label for="${item}"><img src="img/${item}.png" alt="" /></label>
 </div>
   `;
@@ -66,6 +67,11 @@ async function getPokemon(limit, offset) {
   // resetting search by name and type input fields before rendering new generations
   searchNameId.value = "";
   pokeContainer.innerHTML = "";
+  // resetting type input if selected before generations btn click
+  document.querySelectorAll("form input").forEach((item) => {
+    item.checked = false;
+    item.closest("div").style.filter = "brightness(40%)";
+  });
   pokeList = [];
   // featch for all pokemon by generations
   const pokeByGenUrl = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`;
@@ -138,6 +144,8 @@ function renderPoke(name, imgUrl, gen, id, pokeType) {
 // event listener for generations btn
 searchBtnAll.forEach((item) => {
   item.addEventListener("click", (e) => {
+    // remove welcome message when generations button is clicked
+    welcomeDiv.innerHTML = "";
     e.preventDefault();
     searchBtnAll.forEach((item) => (item.style.backgroundColor = "#808088"));
     e.target.style.backgroundColor = "#adff2f";
