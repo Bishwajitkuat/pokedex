@@ -125,7 +125,6 @@ label img {
 .wel_tex1 {
   grid-area: b;
   align-self: center;
-  text-align: justify;
 }
 .wel_txt2 {
   grid-area: c;
