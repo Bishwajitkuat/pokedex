@@ -10,9 +10,10 @@ body {
 }
 .main_container {
   margin: 0 auto;
-  max-width: 1000px;
-  margin-top: 3rem;
+  max-width: 1200px;
+  margin-top: 1rem;
   padding: 2rem;
+  padding-top: 0;
   max-width: 920px;
   display: flex;
   flex-direction: column;
@@ -37,11 +38,20 @@ h1 {
 .search_btn {
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-evenly;
   gap: 1rem;
 }
 .search_btn button {
   padding: 0.5rem;
+  width: 4rem;
+  border-radius: 0.5rem;
+  transition: background-color 750ms;
+  background-color: #808080;
+  box-shadow: 1px 1px 10px #808080;
+}
+.search_btn button:hover {
+  background-color: #adff2f;
 }
 .poke_container {
   padding: 2rem;
@@ -50,13 +60,14 @@ h1 {
   gap: 2rem;
 }
 .cards {
-  border: 0.025rem solid white;
+  background-color: rgba(128, 128, 128, 0.384);
+  box-shadow: -5px 5px 10px gray;
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: end;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
   transition: 2s;
   padding: 1rem;
   position: relative;
@@ -109,7 +120,8 @@ label img {
   align-items: center;
 }
 .search_div {
-  padding: 2rem;
+  width: 100%;
+  padding: 0 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -118,7 +130,8 @@ label img {
 }
 .search_name {
   display: flex;
-  gap: 1.5rem;
+  flex-direction: column;
+  gap: 0.5rem;
   align-items: center;
 }
 .search_name input {

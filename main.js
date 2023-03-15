@@ -135,9 +135,12 @@ function renderPoke(name, imgUrl, gen, id, pokeType) {
 
   pokeContainer.insertAdjacentHTML("beforeend", html);
 }
-
+// event listener for generations btn
 searchBtnAll.forEach((item) => {
   item.addEventListener("click", (e) => {
+    e.preventDefault();
+    searchBtnAll.forEach((item) => (item.style.backgroundColor = "#808088"));
+    e.target.style.backgroundColor = "#adff2f";
     pokeGen = e.target.id;
     const pokeGenDisplay = genList[pokeGen].gen;
     const pokeLimit = genList[pokeGen].limit;
