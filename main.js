@@ -94,7 +94,7 @@ async function getPokemon(limit, offset) {
     const pokeTypesImg = data.types
       .map((item) => {
         const typeName = item.type.name;
-        return `<img src="/img/${typeName}.png" alt="" />`;
+        return `<img src="img/${typeName}.png" alt="" />`;
       })
       .join(" ");
     // constraction of object for each pokemon and push into global pokeList for search by name and type
