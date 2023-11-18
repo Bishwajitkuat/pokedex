@@ -6,6 +6,8 @@ Users can filter pokemon by generation, type and name and all the filtered pokem
 
 <img src="pokedex_app.png" alt="pokedex app image" />
 
+## <a href="https://public.bc.fi/s2300096/pokedex/">Live Site</a>
+
 ## Technologies
 
 - JavaScript
